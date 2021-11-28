@@ -43,9 +43,9 @@ export default {
 }
 .auth-img {
   width: 100%;
-  height: 90vh;
+  height: 80vh;
   min-height: 620px;
-  margin-top: 20px;
+  margin-top: 80px;
 }
 </style>
 
