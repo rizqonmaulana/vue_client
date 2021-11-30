@@ -1,122 +1,244 @@
 <template>
-    <div>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>
-                        <button class="btn btn-primary"><b-icon icon="book" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-warning ml-2"><b-icon icon="pencil-square" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon></button>
-                    </td>
-                </tr>
-                 <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>
-                        <button class="btn btn-primary"><b-icon icon="book" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-warning ml-2"><b-icon icon="pencil-square" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon></button>
-                    </td>
-                </tr>
-                 <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>
-                        <button class="btn btn-primary"><b-icon icon="book" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-warning ml-2"><b-icon icon="pencil-square" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon></button>
-                    </td>
-                </tr>
-                 <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>
-                        <button class="btn btn-primary"><b-icon icon="book" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-warning ml-2"><b-icon icon="pencil-square" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon></button>
-                    </td>
-                </tr>
-                 <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>
-                        <button class="btn btn-primary"><b-icon icon="book" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-warning ml-2"><b-icon icon="pencil-square" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon></button>
-                    </td>
-                </tr>
-                 <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>
-                        <button class="btn btn-primary"><b-icon icon="book" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-warning ml-2"><b-icon icon="pencil-square" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon></button>
-                    </td>
-                </tr>
-                 <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>
-                        <button class="btn btn-primary"><b-icon icon="book" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-warning ml-2"><b-icon icon="pencil-square" scale="0.8" variant="white"></b-icon></button>
-                        <button class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon></button>
-                    </td>
-                </tr>                
-            </tbody>
-        </table>
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col">
+                 <h5 class="mb-5">
+                    {{ title }}
+                </h5>
 
-        <b-pagination
-              v-model="currentPage"
-              :total-rows="20"
-              :per-page="5"
-              class="float-right"
-            >
-        </b-pagination>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <input type="text" class="search float-left" placeholder="search..." v-model="payloadGetEvent.search" @keyup.enter="getAllEvent(payloadGetEvent)">
+                
+                <select name="filter-status" class="filter-status float-left ml-3" v-model="payloadGetEvent.filter" @change="getAllEvent(payloadGetEvent)">
+                    <option value="All">Status All</option>
+                    <option value="Approve">Status Approve</option>
+                    <option value="Pending">Status Pending</option>
+                    <option value="Reject">Status Reject</option>
+                </select>
+
+                <b-button @click="modalShow = !modalShow; setModalTitle('Create event'); setEventAndDateNull()" type="button" class="btn btn-success float-right"><b-icon icon="file-earmark-plus" scale="1.2" variant="white"></b-icon>  New Event</b-button>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+
+                        <th v-for="(item, index) in tableRow" :key="index" >
+                            {{ item }}
+                        </th>
+
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in eventItemsArr" :key="index">
+                            <th scope="row">{{ index + 1 }}</th>
+                            <td> {{ item.name }} </td>
+                            <td> {{ item.userVendor.institutionName }} </td>
+                            <td v-if="item.confirmedDateId" > {{ confirmedDate(item.eventDates, item.confirmedDateId) }} </td>
+                            <td v-else> - </td>
+                            <td v-if="item.status === 'Approve'" class="approve-status" > {{ item.status }} </td> 
+                            <td v-else-if="item.status === 'Reject'" class="reject-status" > {{ item.status }} </td> 
+                            <td v-else-if="item.status === 'Pending'" class="pending-status" > {{ item.status }} </td> 
+                            <td> {{ item.createdAt.slice(0,10) }} </td>
+                            <td>
+                                <b-button @click="modalShow = !modalShow; setModalTitle('View event'); setEvent(item)" class="btn btn-success"><b-icon icon="book" scale="0.8" variant="white"></b-icon>  View</b-button>
+                                <b-button @click="modalShow = !modalShow; setModalTitle('Update event'); setEvent(item)" class="btn btn-warning ml-2"><b-icon icon="pencil-square" scale="0.8" variant="white"></b-icon>  Update</b-button>
+                                <b-button id="popover-button-sync" class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon>  Delete</b-button>
+                                <b-popover :show.sync="show" target="popover-button-sync" title="Popover">
+                                    Hello <strong>World!</strong>
+                                </b-popover>
+                            </td>
+                        </tr> 
+                    </tbody>
+                </table>
+
+                <b-pagination
+                    v-model="currentPage"
+                    :total-rows="20"
+                    :per-page="5"
+                    class="float-right"
+                    >
+                </b-pagination>
+            </div>
+        </div>
+
+         <b-modal v-model="modalShow" size="lg" :title="modalTitle" @change="modalTitleHandler" @ok="createEventHandler()" >
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="input-event-name">Event name</label>
+                    <input type="text" :disabled="modalTitle === 'View event' ? true : false" class="form-control" id="input-event-name" v-model="event.name">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputState">Vendor name</label>
+                    <select v-if="modalTitle === 'Create event'" v-model="event.vendorId" id="inputState" class="form-control"> 
+                        <option selected>Choose...</option>
+                        <option v-for="(item, index) in vendorsArr" :key="index" :value="item.id">
+                            {{item.institutionName}}
+                        </option>
+                    </select>
+
+                    <select v-else id="inputState" class="form-control" :disabled="modalTitle === 'View event' ? true : false">
+                        <option v-for="(item, index) in vendorsArr" :key="index" :value="item.id" :selected="event.confirmedDateId">
+                            {{item.institutionName}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input type="text" :disabled="modalTitle === 'View event' ? true : false" class="form-control" id="inputAddress" placeholder="Address" v-model="event.locationText">
+            </div>
+            <div class="form-row" v-if="event.status !== 'Approve' || modalTitle === 'Create event'">
+                <div class="col-md-4 mb-3">
+                    <label for="validationTooltip01">Proposed date 1</label>
+                    <input type="date" :disabled="modalTitle === 'View event' ? true : false" class="form-control" id="validationTooltip01" v-model="dateOne" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="validationTooltip02">Proposed date 2</label>
+                    <input type="date" :disabled="modalTitle === 'View event' ? true : false" class="form-control" id="validationTooltip02" v-model="dateTwo" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="validationTooltip02">Proposed date 3</label>
+                    <input type="date" :disabled="modalTitle === 'View event' ? true : false" class="form-control" id="validationTooltip02" v-model="dateThree" required>
+                </div>
+            </div>
+            <div class="form-row" v-if="modalTitle === 'View event'">
+                <div v-if="event.status === 'Approve'" class="col">
+                    <label>Confirmed date</label>
+                    <input type="date" class="form-control" v-model="confirmedDateApprove" disabled>
+                </div>
+                <div class="col">
+                    <label>Status</label>
+                    <input type="text" class="form-control" v-model="event.status" disabled>
+                </div>
+            </div>
+            <div class="form-group" v-if="event.status === 'Reject'">
+                <label for="exampleInputEmail1">Remarks</label>
+                <input v-model="event.remarks" type="text" class="form-control" disabled>
+            </div>
+         </b-modal>
+
     </div>
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex'
+  import moment from 'moment'
+
   export default {
+    props: ['title', 'tableRow', 'eventItems'],
     data() {
       return {
         perPage: 3,
         currentPage: 1,
+        modalShow: false,
+        modalTitle: '',
+        show: false,
+        event: {
+            name: '',
+            locationText: '',
+            confirmedDateId: '',
+            status: '',
+            remarks: '',
+            createdAt: '',
+            updatedAt: '',
+            vendorId: '',
+            vendorName: '',
+            confirmedDate: '',
+            eventDates: []
+        },
+        dateOne: '',
+        dateTwo: '',
+        dateThree: '',
+        confirmedDateApprove: '',
+        payloadGetEvent: {
+            idUser: 1,
+            search: '',
+            role: 'HR',
+            filter: 'All',
+            page: 1,
+            limit: 100
+        }
       }
     },
+    computed: {
+      ...mapGetters({
+        eventItemsArr: 'getEvents',
+        vendorsArr: 'getVendors'
+      }),
+    },
+    methods: {
+        ...mapActions(['getAllEvent', 'getAllVendor', 'createEvent']),
+      setModalTitle(title) {
+        this.modalTitle = title
+      },
+      confirmedDate(date, dateId) {
+        const dateObj = date.find(date => date.id == dateId)
+        const fixDate = dateObj.date.slice(0, 10)
+        this.confirmedDateApprove = fixDate
+        return fixDate
+      },
+      setEvent(event) {
+        this.dateOne =  this.formatTime(event.eventDates[0].date)
+        this.dateTwo =  this.formatTime(event.eventDates[1].date)
+        this.dateThree =  this.formatTime(event.eventDates[2].date)
+
+        this.event = event
+      },
+      setEventAndDateNull() {
+        this.dateOne = '',
+        this.dateTwo = '',
+        this.dateThree = ''
+
+        this.event = {}
+      },
+      modalTitleHandler() {
+        if (this.modalShow == false) {
+          this.modalTitle = ''
+        }
+      },
+      formatTime(time) {
+        return moment(time).format('YYYY-MM-DD')
+      },
+      createEventHandler() {
+          const payload = {
+            name: this.event.name,
+            locationText: this.event.locationText ,
+            companyUserId: 1,
+            vendorUserId: this.event.vendorUserId,
+            eventDates: [
+                this.dateOne,
+                this.dateTwo,
+                this.dateThree
+            ]
+          }
+
+          console.log(payload);
+
+        this.createEvent(payload).then(() => {
+            this.getAllEvent(this.payloadGetEvent)
+        }).catch(() => {
+            console.log('gagal simpan')
+        })
+      },
+    },
+   created() {
+        this.getAllEvent(this.payloadGetEvent).then(res => {
+            console.log('get all event');
+            console.log(res)
+        })
+        this.getAllVendor().then(res => {
+            console.log(res)
+        })
+    }
   }
 </script>
 
@@ -124,4 +246,65 @@
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #eafff8;
 }
+
+.btn {
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+}
+
+.btn:hover {
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+}
+
+.approve-status {
+    color: #1bc28a;
+    font-weight: bold;
+}
+
+.reject-status {
+    color: #c21b1b;
+    font-weight: bold;
+}
+
+.pending-status {
+    color: #dbce12;
+    font-weight: bold;
+}
+
+.container-fluid {
+        padding: 50px;
+}
+
+.search {
+    width: 200px;
+    border-top: unset;
+    border-left: unset;
+    border-right: unset;
+    border-bottom: 1px solid rgb(184, 182, 182);
+    height: 40px;
+    color: rgb(116, 116, 116);
+}
+
+.search:focus {
+    outline: none !important;
+    border-bottom: 1.5px solid #1bc28a;
+}
+
+.filter-status {
+    border-top: unset;
+    border-left: unset;
+    border-right: unset;
+    width: 150px;
+    height: 40px;
+    font-size: 14px;
+    color: rgb(116, 116, 116);
+    border-bottom: 1px solid rgb(184, 182, 182);
+}
+
+.filter-status:focus {
+    outline: none !important;
+    border-bottom: 1.5px solid #1bc28a;
+}
+
 </style>
