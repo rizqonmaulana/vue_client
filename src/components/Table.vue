@@ -70,7 +70,7 @@
             </div>
         </div>
 
-         <b-modal v-model="modalShow" size="lg" :title="modalTitle" @change="modalTitleHandler" @ok="createEventHandler()" >
+         <b-modal v-model="modalShow" size="lg" :title="modalTitle" @change="modalTitleHandler" @ok="modalTitle === 'Create event' ? createEventHandler() : updateEventHandler()" >
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="input-event-name">Event name</label>
@@ -93,8 +93,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputAddress">Address</label>
-                <input type="text" :disabled="modalTitle === 'View event' ? true : false" class="form-control" id="inputAddress" placeholder="Address" v-model="event.locationText">
+                <label for="inputAddress">Location</label>
+                <input type="text" :disabled="modalTitle === 'View event' ? true : false" class="form-control" id="inputAddress" v-model="event.locationText">
             </div>
             <div class="form-row" v-if="event.status !== 'Approve' || modalTitle === 'Create event'">
                 <div class="col-md-4 mb-3">
@@ -178,7 +178,7 @@
       }),
     },
     methods: {
-        ...mapActions(['getAllEvent', 'getAllVendor', 'createEvent']),
+        ...mapActions(['getAllEvent', 'getAllVendor', 'createEvent', 'updateEvent']),
       setModalTitle(title) {
         this.modalTitle = title
       },
@@ -226,6 +226,28 @@
           console.log(payload);
 
         this.createEvent(payload).then(() => {
+            this.getAllEvent(this.payloadGetEvent)
+        }).catch(() => {
+            console.log('gagal simpan')
+        })
+      },
+       updateEventHandler() {
+          const payload = {
+            id: this.event.id,
+            name: this.event.name,
+            locationText: this.event.locationText ,
+            companyUserId: 1,
+            vendorUserId: this.event.vendorUserId,
+            eventDates: [
+                this.dateOne,
+                this.dateTwo,
+                this.dateThree
+            ]
+          }
+
+          console.log(payload);
+
+        this.updateEvent(payload).then(() => {
             this.getAllEvent(this.payloadGetEvent)
         }).catch(() => {
             console.log('gagal simpan')
@@ -301,6 +323,7 @@
     height: 40px;
     font-size: 14px;
     color: rgb(116, 116, 116);
+    background-color: unset;
     border-bottom: 1px solid rgb(184, 182, 182);
 }
 
