@@ -5,7 +5,7 @@
                  <h5 class="mb-5">
                     {{ title }}
                     <br>
-                    Company / vendor name
+                    {{ user.institutionName }}
                 </h5>
 
             </div>
@@ -88,8 +88,8 @@
                         </option>
                     </select>
 
-                    <select v-else id="inputState" class="form-control" :disabled="modalTitle === 'View event' ? true : false">
-                        <option v-for="(item, index) in vendorsArr" :key="index" :value="item.id" :selected="event.confirmedDateId">
+                    <select v-else id="inputState" class="form-control" :disabled="modalTitle === 'View event' ? true : false" v-model="event.vendorUserId">
+                        <option v-for="(item, index) in vendorsArr" :key="index" :value="item.id" :selected="event.vendorUserId">
                             {{item.institutionName}}
                         </option>
                     </select>
