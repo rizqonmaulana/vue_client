@@ -96,8 +96,7 @@
                 </div>
                 <div v-else class="form-group col-md-6">
                      <label for="inputState">Company name</label>
-                     <!-- {{typeOf(event.userCompany)}} -->
-                     <!-- <input type="text" class="form-control" v-model="event.userCompany.institutionName" disabled> -->
+                     <input type="text" class="form-control" :value="event.userCompany && event.userCompany.institutionName" disabled>
                 </div>
             </div>
             <div class="form-group">
@@ -151,14 +150,7 @@
                     <input v-else-if="updateStatus === 'Reject'" v-model="event.remarks" type="text" class="form-control" placeholder="remarksss">
                  </div>
             </div>
-
-            
          </b-modal>
-
-{{this.dateOne}}
-{{this.dateTwo}}
-{{this.dateThree}}
-
     </div>
 </template>
 
@@ -193,18 +185,18 @@
         dateThree: '',
         confirmedDateApprove: '',
         payloadGetEvent: {
-            idUser: 1,
+            idUser: 2,
             search: '',
-            role: 'HR',
+            role: 'vendor',
             filter: 'All',
             page: 1,
-            limit: 10
+            limit: 50
         },
         user: {
-            id: 1,
-            name: 'hr1',
-            role: 'HR',
-            institutionName: 'Big Group',
+            id: 2,
+            name: 'vendor1',
+            role: 'vendor',
+            institutionName: 'Bee Group',
         },
         updateStatus : ''
       }
@@ -313,6 +305,7 @@
         
         this.updateEventStatus(payload).then(() => {
             this.getAllEvent(this.payloadGetEvent)
+            this.updateStatus = ''
         }).catch(() => {
             console.log('gagal simpan')
         })
@@ -406,5 +399,4 @@
     outline: none !important;
     border-bottom: 1.5px solid #1bc28a;
 }
-
 </style>
