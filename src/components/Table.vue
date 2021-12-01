@@ -51,10 +51,11 @@
                             <td>
                                 <b-button @click="modalShow = !modalShow; setModalTitle('View event'); setEvent(item)" class="btn btn-success"><b-icon icon="book" scale="0.8" variant="white"></b-icon>  View</b-button>
                                 <b-button @click="modalShow = !modalShow; setModalTitle('Update event'); setEvent(item)" class="btn btn-warning ml-2"><b-icon icon="pencil-square" scale="0.8" variant="white"></b-icon>  Update</b-button>
-                                <b-button id="popover-button-sync" class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon>  Delete</b-button>
+                                <b-button @click="setEvent(item); deleteEventHandler()" id="popover-button-sync" class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon>  Delete</b-button>
+                                <!-- <b-button id="popover-button-sync" class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon>  Delete</b-button>
                                 <b-popover :show.sync="show" target="popover-button-sync" title="Popover">
                                     Hello <strong>World!</strong>
-                                </b-popover>
+                                </b-popover> -->
                             </td>
                         </tr> 
                     </tbody>
@@ -178,7 +179,7 @@
       }),
     },
     methods: {
-        ...mapActions(['getAllEvent', 'getAllVendor', 'createEvent', 'updateEvent']),
+        ...mapActions(['getAllEvent', 'getAllVendor', 'createEvent', 'updateEvent', 'deleteEvent']),
       setModalTitle(title) {
         this.modalTitle = title
       },
@@ -248,6 +249,17 @@
           console.log(payload);
 
         this.updateEvent(payload).then(() => {
+            this.getAllEvent(this.payloadGetEvent)
+        }).catch(() => {
+            console.log('gagal simpan')
+        })
+      },
+      deleteEventHandler() {
+        const payload = {
+            id: this.event.id
+        }
+
+        this.deleteEvent(payload).then(() => {
             this.getAllEvent(this.payloadGetEvent)
         }).catch(() => {
             console.log('gagal simpan')
