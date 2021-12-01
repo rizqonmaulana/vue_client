@@ -4,6 +4,8 @@
             <div class="col">
                  <h5 class="mb-5">
                     {{ title }}
+                    <br>
+                    Company / vendor name
                 </h5>
 
             </div>
@@ -19,7 +21,7 @@
                     <option value="Reject">Status Reject</option>
                 </select>
 
-                <b-button @click="modalShow = !modalShow; setModalTitle('Create event'); setEventAndDateNull()" type="button" class="btn btn-success float-right"><b-icon icon="file-earmark-plus" scale="1.2" variant="white"></b-icon>  New Event</b-button>
+                <b-button v-if="user.role === 'HR'" @click="modalShow = !modalShow; setModalTitle('Create event'); setEventAndDateNull()" type="button" class="btn btn-success float-right"><b-icon icon="file-earmark-plus" scale="1.2" variant="white"></b-icon>  New Event</b-button>
 
             </div>
         </div>
@@ -41,7 +43,7 @@
                         <tr v-for="(item, index) in eventItemsArr" :key="index">
                             <th scope="row">{{ index + 1 }}</th>
                             <td> {{ item.name }} </td>
-                            <td> {{ item.userVendor.institutionName }} </td>
+                            <td> {{ user.role === 'HR' ? item.userVendor.institutionName : item.userCompany.institutionName }} </td>
                             <td v-if="item.confirmedDateId" > {{ confirmedDate(item.eventDates, item.confirmedDateId) }} </td>
                             <td v-else> - </td>
                             <td v-if="item.status === 'Approve'" class="approve-status" > {{ item.status }} </td> 
@@ -50,8 +52,8 @@
                             <td> {{ item.createdAt.slice(0,10) }} </td>
                             <td>
                                 <b-button @click="modalShow = !modalShow; setModalTitle('View event'); setEvent(item)" class="btn btn-success"><b-icon icon="book" scale="0.8" variant="white"></b-icon>  View</b-button>
-                                <b-button @click="modalShow = !modalShow; setModalTitle('Update event'); setEvent(item)" class="btn btn-warning ml-2"><b-icon icon="pencil-square" scale="0.8" variant="white"></b-icon>  Update</b-button>
-                                <b-button @click="setEvent(item); deleteEventHandler()" id="popover-button-sync" class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon>  Delete</b-button>
+                                <b-button @click="modalShow = !modalShow; setModalTitle('Update event'); setEvent(item)" v-if="user.role === 'HR'" class="btn btn-warning ml-2"><b-icon icon="pencil-square" scale="0.8" variant="white"></b-icon>  Update</b-button>
+                                <b-button v-if="user.role === 'HR'" @click="setEvent(item); deleteEventHandler()" id="popover-button-sync" class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon>  Delete</b-button>
                                 <!-- <b-button id="popover-button-sync" class="btn btn-danger ml-2"><b-icon icon="trash" scale="0.8" variant="white"></b-icon>  Delete</b-button>
                                 <b-popover :show.sync="show" target="popover-button-sync" title="Popover">
                                     Hello <strong>World!</strong>
@@ -71,13 +73,13 @@
             </div>
         </div>
 
-         <b-modal v-model="modalShow" size="lg" :title="modalTitle" @change="modalTitleHandler" @ok="modalTitle === 'Create event' ? createEventHandler() : updateEventHandler()" >
+         <b-modal v-model="modalShow" size="lg" :title="modalTitle" @change="modalTitleHandler" @ok="modalTitle === 'Create event' ? createEventHandler() : modalTitle === 'Update event' ? updateEventHandler() : updateEvenStatusHandler()" >
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="input-event-name">Event name</label>
                     <input type="text" :disabled="modalTitle === 'View event' ? true : false" class="form-control" id="input-event-name" v-model="event.name">
                 </div>
-                <div class="form-group col-md-6">
+                <div v-if="user.role === 'HR'" class="form-group col-md-6">
                     <label for="inputState">Vendor name</label>
                     <select v-if="modalTitle === 'Create event'" v-model="event.vendorUserId" id="inputState" class="form-control"> 
                         <option selected>Choose...</option>
@@ -91,6 +93,11 @@
                             {{item.institutionName}}
                         </option>
                     </select>
+                </div>
+                <div v-else class="form-group col-md-6">
+                     <label for="inputState">Company name</label>
+                     <!-- {{typeOf(event.userCompany)}} -->
+                     <!-- <input type="text" class="form-control" v-model="event.userCompany.institutionName" disabled> -->
                 </div>
             </div>
             <div class="form-group">
@@ -125,9 +132,32 @@
                 <label for="exampleInputEmail1">Remarks</label>
                 <input v-model="event.remarks" type="text" class="form-control" disabled>
             </div>
+
+            <div class="form-row mt-5 d-flex justify-content-center" v-if="user.role === 'vendor' && event.status === 'Pending'">
+                   <button type="button" class="btn btn-success" @click="setUpdateStatus('Approve')">Approve</button>
+                   <button type="button" class="btn btn-danger ml-5" @click="setUpdateStatus('Reject')">Reject</button>
+            </div>
+
+            <div class="form-group" v-if="updateStatus !== ''">
+                 <div class="col">
+                    <label>{{ updateStatus === 'Approve' ? 'Choose date' : 'Remarks' }}</label>
+
+                    <select v-if="updateStatus === 'Approve'" id="inputState" class="form-control" v-model="event.confirmedDateId"> 
+                        <option v-for="(item, index) in event.eventDates" :key="index" :value="item.id">
+                            {{item.date.slice(0, 10)}}
+                        </option>
+                    </select>
+
+                    <input v-else-if="updateStatus === 'Reject'" v-model="event.remarks" type="text" class="form-control" placeholder="remarksss">
+                 </div>
+            </div>
+
+            
          </b-modal>
 
-         {{event}}
+{{this.dateOne}}
+{{this.dateTwo}}
+{{this.dateThree}}
 
     </div>
 </template>
@@ -168,8 +198,15 @@
             role: 'HR',
             filter: 'All',
             page: 1,
-            limit: 2
-        }
+            limit: 10
+        },
+        user: {
+            id: 1,
+            name: 'hr1',
+            role: 'HR',
+            institutionName: 'Big Group',
+        },
+        updateStatus : ''
       }
     },
     computed: {
@@ -179,7 +216,7 @@
       }),
     },
     methods: {
-        ...mapActions(['getAllEvent', 'getAllVendor', 'createEvent', 'updateEvent', 'deleteEvent']),
+        ...mapActions(['getAllEvent', 'getAllVendor', 'createEvent', 'updateEvent', 'updateEventStatus', 'deleteEvent']),
       setModalTitle(title) {
         this.modalTitle = title
       },
@@ -211,6 +248,9 @@
       formatTime(time) {
         return moment(time).format('YYYY-MM-DD')
       },
+      setUpdateStatus(status) {
+        this.updateStatus = status
+      },
       createEventHandler() {
           const payload = {
             name: this.event.name,
@@ -240,15 +280,38 @@
             companyUserId: 1,
             vendorUserId: this.event.vendorUserId,
             eventDates: [
-                this.dateOne,
-                this.dateTwo,
-                this.dateThree
+                {
+                    id: this.event.eventDates[0].id,
+                    date: this.dateOne
+                },
+                {
+                    id: this.event.eventDates[1].id,
+                    date: this.dateTwo
+                },
+                {
+                    id: this.event.eventDates[2].id,
+                    date: this.dateThree
+                }
             ]
           }
 
           console.log(payload);
 
         this.updateEvent(payload).then(() => {
+            this.getAllEvent(this.payloadGetEvent)
+        }).catch(() => {
+            console.log('gagal simpan')
+        })
+      },
+      updateEvenStatusHandler() {
+        const payload = {
+            id: this.event.id,
+            confirmedDateId: this.event.confirmedDateId,
+            status: this.updateStatus,
+            remarks: this.event.remarks
+        }
+        
+        this.updateEventStatus(payload).then(() => {
             this.getAllEvent(this.payloadGetEvent)
         }).catch(() => {
             console.log('gagal simpan')

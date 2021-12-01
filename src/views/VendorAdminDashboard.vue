@@ -1,23 +1,33 @@
 <template>
-  <div class="vendor-admin-dashboard">
-   <h1>Vendor Admin Dashboard</h1>
-   
-  <b-button @click="modalShow = !modalShow">Open Modal</b-button>
-
-    <b-modal v-model="modalShow">Hello From Modal!</b-modal>
-   
-  </div>
+    <div>
+        <Table 
+            :title="title"
+            :tableRow="tableRow" 
+            :eventItems="eventItems"
+        />
+    </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import Table from "../components/Table.vue"
 
 export default {
-    name: "VendorAdminDashboard",
+    name: 'HRAdminDashboard',
+    components: {
+        Table
+    },
     data() {
-      return {
-        modalShow: false
-      }
+        return {
+            title: "Vendor Admin Dashboard",
+            tableRow: [
+                'Event Name',
+                'Company Name',
+                'Confirmed Date',
+                'Status',
+                'Date Created'
+            ]
+        }
     }
 };
 </script>
