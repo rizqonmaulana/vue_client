@@ -78,7 +78,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputState">Vendor name</label>
-                    <select v-if="modalTitle === 'Create event'" v-model="event.vendorId" id="inputState" class="form-control"> 
+                    <select v-if="modalTitle === 'Create event'" v-model="event.vendorUserId" id="inputState" class="form-control"> 
                         <option selected>Choose...</option>
                         <option v-for="(item, index) in vendorsArr" :key="index" :value="item.id">
                             {{item.institutionName}}
@@ -126,6 +126,8 @@
             </div>
          </b-modal>
 
+         {{event}}
+
     </div>
 </template>
 
@@ -150,7 +152,7 @@
             remarks: '',
             createdAt: '',
             updatedAt: '',
-            vendorId: '',
+            vendorUserId: '',
             vendorName: '',
             confirmedDate: '',
             eventDates: []
@@ -165,7 +167,7 @@
             role: 'HR',
             filter: 'All',
             page: 1,
-            limit: 100
+            limit: 2
         }
       }
     },
