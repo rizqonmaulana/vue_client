@@ -47,8 +47,10 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { alertMixin } from '../../mixins/alertMixin'
 import store from '../../store'
 export default {
+  mixins: [alertMixin],
   data() {
     return {
       userLogin: {
@@ -73,6 +75,7 @@ export default {
       this.login(this.userLogin)
         .then((res) => {
           const result = res.data.data.role
+          this.successAlert(`Success login as ${result}`)
           if (result === 'HR') {
             this.$router.push('/hr-admin-dashboard')
           } else if (result === 'vendor') {
@@ -80,6 +83,7 @@ export default {
           }
         })
         .catch((err) => {
+          this.errorAlert('failed to update event :(')
           console.log(err.data.message)
         })
     }

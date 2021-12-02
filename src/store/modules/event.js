@@ -34,22 +34,16 @@ export default {
       })
     },
     createEvent(context, payload) {
-      const config = {
-        headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJocjEiLCJlbWFpbCI6ImhyMUBnbWFpbC5jb20iLCJpbnN0aXR1dGlvbk5hbWUiOiJCaWcgR3JvdXAiLCJyb2xlIjoiSFIiLCJpYXQiOjE2MzgyOTMwNDUsImV4cCI6MTYzODM3OTQ0NX0.irYzgO3kUlZtQTOR1SeNWs36mneAnyOjc7pXX7BVzIk` }
-      }
-      axios.post('http://localhost:3000/api/embreo/event/create', payload, config)
+      axios.post('http://localhost:3000/api/embreo/event/create', payload)
       .then(response => {
-        console.log('response dari create event', response);
+        console.log(response);
       })
       .catch(error => {
         console.log('ini error', error)
       })
     },
     updateEvent(context, payload) {
-      const config = {
-        headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJocjEiLCJlbWFpbCI6ImhyMUBnbWFpbC5jb20iLCJpbnN0aXR1dGlvbk5hbWUiOiJCaWcgR3JvdXAiLCJyb2xlIjoiSFIiLCJpYXQiOjE2MzgyOTMwNDUsImV4cCI6MTYzODM3OTQ0NX0.irYzgO3kUlZtQTOR1SeNWs36mneAnyOjc7pXX7BVzIk` }
-      }
-      axios.put(`http://localhost:3000/api/embreo/event/update/${payload.id}`, payload, config)
+      axios.put(`http://localhost:3000/api/embreo/event/update/${payload.id}`, payload)
       .then(response => {
         console.log('response dari update event', response);
       })
@@ -58,10 +52,7 @@ export default {
       })
     },
     updateEventStatus(context, payload) {
-      const config = {
-        headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ2ZW5kb3IxIiwiZW1haWwiOiJ2ZW5kb3IxQGdtYWlsLmNvbSIsImluc3RpdHV0aW9uTmFtZSI6IkJpZyBHcm91cCIsInJvbGUiOiJ2ZW5kb3IiLCJpYXQiOjE2MzgzNjk0NzQsImV4cCI6MTYzODQ1NTg3NH0.M3dp11Q8RrC1dkVSRidl2BK6iYOmSd1FidXEcKP5FH8` }
-      }
-      axios.put(`http://localhost:3000/api/embreo/event/update_status/${payload.id}`, payload, config)
+      axios.put(`http://localhost:3000/api/embreo/event/update_status/${payload.id}`, payload)
       .then(response => {
         console.log('response dari update event status', response);
       })
@@ -70,10 +61,7 @@ export default {
       })
     },
     deleteEvent(context, payload) {
-      const config = {
-        headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJocjEiLCJlbWFpbCI6ImhyMUBnbWFpbC5jb20iLCJpbnN0aXR1dGlvbk5hbWUiOiJCaWcgR3JvdXAiLCJyb2xlIjoiSFIiLCJpYXQiOjE2MzgyOTMwNDUsImV4cCI6MTYzODM3OTQ0NX0.irYzgO3kUlZtQTOR1SeNWs36mneAnyOjc7pXX7BVzIk` }
-      }
-      axios.delete(`http://localhost:3000/api/embreo/event/delete/${payload.id}`, config)
+      axios.delete(`http://localhost:3000/api/embreo/event/delete/${payload.id}`)
       .then(response => {
         console.log('response dari delete event', response);
       })
