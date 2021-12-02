@@ -518,7 +518,6 @@ export default {
           this.updateStatus = ''
         })
         .catch(() => {
-          console.log('gagal simpan')
           this.errorAlert('failed to update event status :(')
         })
     },
@@ -537,7 +536,6 @@ export default {
         })
     },
     onPageChange(numberPage) {
-      console.log(numberPage)
       this.payloadGetEvent.page = numberPage
       this.getAllEvent(this.payloadGetEvent)
     },
