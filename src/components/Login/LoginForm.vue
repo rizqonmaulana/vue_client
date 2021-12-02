@@ -14,7 +14,7 @@
       <div class="bottom">
         <p class="text-grey text-center">Welcome Back!</p>
         <h4 class="text-black mt-3">Login your account</h4>
-        <label class="text-grey mt-4"> Email </label>
+        <label class="text-grey mt-4"> Username </label>
         <br />
         <input
           type="text"
