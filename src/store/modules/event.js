@@ -3,7 +3,8 @@ import axios from 'axios'
 export default {
   state: {
       events: [],
-      vendors: []
+      vendors: [],
+      pagination: {}
   },
   mutations: {
     setEvents(state, events) {
@@ -11,6 +12,9 @@ export default {
     },
     setVendors(state, vendors) {
         state.vendors = vendors
+    },
+    setPagination(state, paginate) {
+      state.pagination = paginate
     }
   },
   actions: {
@@ -19,6 +23,7 @@ export default {
         axios.get('http://localhost:3000' + query)
         .then(response => {
             context.commit('setEvents', response.data.data)
+            context.commit('setPagination', response.data.pagination)
         })
         .catch(error => {
             console.log('ini error', error)
@@ -76,6 +81,9 @@ export default {
     },
     getVendors(state) {
         return state.vendors
+    },
+    getPagination(state) {
+      return state.pagination
     }
   },
 }

@@ -24,14 +24,20 @@
           class="search float-left"
           placeholder="search..."
           v-model="payloadGetEvent.search"
-          @keyup.enter="getAllEvent(payloadGetEvent)"
+          @keyup.enter="
+            setPageOne()
+            getAllEvent(payloadGetEvent)
+          "
         />
 
         <select
           name="filter-status"
           class="filter-status float-left ml-3"
           v-model="payloadGetEvent.filter"
-          @change="getAllEvent(payloadGetEvent)"
+          @change="
+            setPageOne()
+            getAllEvent(payloadGetEvent)
+          "
         >
           <option value="All">Status All</option>
           <option value="Approve">Status Approve</option>
@@ -73,7 +79,9 @@
           </thead>
           <tbody>
             <tr v-for="(item, index) in eventItemsArr" :key="index">
-              <th scope="row">{{ index + 1 }}</th>
+              <th scope="row">
+                {{ (currentPage - 1) * payloadGetEvent.limit + 1 + index }}
+              </th>
               <td>{{ item.name }}</td>
               <td>
                 {{
@@ -140,8 +148,9 @@
 
         <b-pagination
           v-model="currentPage"
-          :total-rows="20"
-          :per-page="5"
+          @change="onPageChange"
+          :total-rows="paginData.totalData"
+          :per-page="payloadGetEvent.limit"
           class="float-right"
         >
         </b-pagination>
@@ -387,7 +396,7 @@ export default {
         role: 'HR',
         filter: 'All',
         page: 1,
-        limit: 50
+        limit: 5
       },
       updateStatus: ''
     }
@@ -396,7 +405,8 @@ export default {
     ...mapGetters({
       eventItemsArr: 'getEvents',
       vendorsArr: 'getVendors',
-      user: 'getUser'
+      user: 'getUser',
+      paginData: 'getPagination'
     })
   },
   methods: {
@@ -525,6 +535,15 @@ export default {
         .catch(() => {
           this.errorAlert('failed to update event :(')
         })
+    },
+    onPageChange(numberPage) {
+      console.log(numberPage)
+      this.payloadGetEvent.page = numberPage
+      this.getAllEvent(this.payloadGetEvent)
+    },
+    setPageOne() {
+      this.currentPage = 1
+      this.payloadGetEvent.page = 1
     }
   },
   created() {
