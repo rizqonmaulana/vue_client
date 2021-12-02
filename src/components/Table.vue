@@ -513,7 +513,6 @@ export default {
 
       this.updateEventStatus(payload)
         .then(() => {
-          this.successAlert('Success update event status')
           this.getAllEvent(this.payloadGetEvent)
           this.updateStatus = ''
         })
