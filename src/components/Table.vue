@@ -464,9 +464,11 @@ export default {
 
       this.createEvent(payload)
         .then((result) => {
-          console.log('dari create event ', result)
-          this.successAlert('Success create event')
-          this.getAllEvent(this.payloadGetEvent)
+          console.log(result)
+          setTimeout(() => {
+            this.getAllEvent(this.payloadGetEvent)
+            this.successAlert('Success create event')
+          }, 500)
         })
         .catch((error) => {
           console.log(error)
@@ -498,8 +500,10 @@ export default {
 
       this.updateEvent(payload)
         .then(() => {
-          this.successAlert('Success update event')
-          this.getAllEvent(this.payloadGetEvent)
+          setTimeout(() => {
+            this.successAlert('Success update event')
+            this.getAllEvent(this.payloadGetEvent)
+          }, 500)
         })
         .catch((error) => {
           console.log(error)
@@ -516,8 +520,10 @@ export default {
 
       this.updateEventStatus(payload)
         .then(() => {
-          this.getAllEvent(this.payloadGetEvent)
-          this.updateStatus = ''
+          setTimeout(() => {
+            this.getAllEvent(this.payloadGetEvent)
+            this.updateStatus = ''
+          }, 500)
         })
         .catch(() => {
           this.errorAlert('failed to update event status :(')
@@ -530,8 +536,10 @@ export default {
 
       this.deleteEvent(payload)
         .then(() => {
-          this.successAlert('Success delete event')
-          this.getAllEvent(this.payloadGetEvent)
+          setTimeout(() => {
+            this.successAlert('Success delete event')
+            this.getAllEvent(this.payloadGetEvent)
+          }, 500)
         })
         .catch(() => {
           this.errorAlert('failed to update event :(')
