@@ -460,8 +460,11 @@ export default {
         eventDates: [this.dateOne, this.dateTwo, this.dateThree]
       }
 
+      console.log('payload create', payload)
+
       this.createEvent(payload)
-        .then(() => {
+        .then((result) => {
+          console.log('dari create event ', result)
           this.successAlert('Success create event')
           this.getAllEvent(this.payloadGetEvent)
         })
