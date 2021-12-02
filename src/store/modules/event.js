@@ -19,7 +19,7 @@ export default {
   },
   actions: {
     getAllEvent(context, payload) {
-      let query = `/api/embreo/event?id=${payload.idUser}&search=${payload.search}&role=${payload.role}&filter=${payload.filter}&page=${payload.page}&limit=${payload.limit}`
+      let query = `/api/embreo/event?id=${payload.id}&search=${payload.search}&role=${payload.role}&filter=${payload.filter}&page=${payload.page}&limit=${payload.limit}`
         axios.get(`${process.env.VUE_APP_SERVER_URL}` + query)
         .then(response => {
           console.log('ini get all data ', response)

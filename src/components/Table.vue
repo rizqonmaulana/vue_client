@@ -26,7 +26,7 @@
           v-model="payloadGetEvent.search"
           @keyup.enter="
             setPageOne()
-            getAllEvent(payloadGetEvent)
+            getAllEvent({ ...payloadGetEvent, ...user })
           "
         />
 
@@ -36,7 +36,7 @@
           v-model="payloadGetEvent.filter"
           @change="
             setPageOne()
-            getAllEvent(payloadGetEvent)
+            getAllEvent({ ...payloadGetEvent, ...user })
           "
         >
           <option value="All">Status All</option>
@@ -391,9 +391,7 @@ export default {
       dateThree: '',
       confirmedDateApprove: '',
       payloadGetEvent: {
-        idUser: 1,
         search: '',
-        role: 'HR',
         filter: 'All',
         page: 1,
         limit: 5
@@ -455,7 +453,7 @@ export default {
       const payload = {
         name: this.event.name,
         locationText: this.event.locationText,
-        companyUserId: 1,
+        companyUserId: this.user.id,
         vendorUserId: this.event.vendorUserId,
         eventDates: [this.dateOne, this.dateTwo, this.dateThree]
       }
@@ -466,7 +464,7 @@ export default {
         .then((result) => {
           console.log(result)
           setTimeout(() => {
-            this.getAllEvent(this.payloadGetEvent)
+            this.getAllEvent({ ...this.payloadGetEvent, ...this.user })
             this.successAlert('Success create event')
           }, 500)
         })
@@ -480,7 +478,7 @@ export default {
         id: this.event.id,
         name: this.event.name,
         locationText: this.event.locationText,
-        companyUserId: 1,
+        companyUserId: this.user.id,
         vendorUserId: this.event.vendorUserId,
         eventDates: [
           {
@@ -502,7 +500,7 @@ export default {
         .then(() => {
           setTimeout(() => {
             this.successAlert('Success update event')
-            this.getAllEvent(this.payloadGetEvent)
+            this.getAllEvent({ ...this.payloadGetEvent, ...this.user })
           }, 500)
         })
         .catch((error) => {
@@ -521,7 +519,7 @@ export default {
       this.updateEventStatus(payload)
         .then(() => {
           setTimeout(() => {
-            this.getAllEvent(this.payloadGetEvent)
+            this.getAllEvent({ ...this.payloadGetEvent, ...this.user })
             this.updateStatus = ''
           }, 500)
         })
@@ -538,7 +536,7 @@ export default {
         .then(() => {
           setTimeout(() => {
             this.successAlert('Success delete event')
-            this.getAllEvent(this.payloadGetEvent)
+            this.getAllEvent({ ...this.payloadGetEvent, ...this.user })
           }, 500)
         })
         .catch(() => {
@@ -547,7 +545,7 @@ export default {
     },
     onPageChange(numberPage) {
       this.payloadGetEvent.page = numberPage
-      this.getAllEvent(this.payloadGetEvent)
+      this.getAllEvent({ ...this.payloadGetEvent, ...this.user })
     },
     setPageOne() {
       this.currentPage = 1
@@ -555,7 +553,7 @@ export default {
     }
   },
   created() {
-    this.getAllEvent(this.payloadGetEvent).then((res) => {
+    this.getAllEvent({ ...this.payloadGetEvent, ...this.user }).then((res) => {
       console.log(res)
     })
     this.getAllVendor().then((res) => {
