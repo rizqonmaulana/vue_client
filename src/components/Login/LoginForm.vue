@@ -83,7 +83,7 @@ export default {
           }
         })
         .catch((err) => {
-          this.errorAlert('failed to update event :(')
+          this.errorAlert('failed to login :(')
           console.log(err.data.message)
         })
     }

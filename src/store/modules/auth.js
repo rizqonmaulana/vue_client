@@ -19,17 +19,11 @@ export default {
         login(context, payload) {
             return new Promise((resolve, reject) => {
               axios
-                .post(`http://localhost:3000/api/embreo/user/login`, payload)
+                .post(`${process.env.VUE_APP_SERVER_URL}/api/embreo/user/login`, payload)
                 .then(result => {
                   context.commit('setUser', result.data.data)
                   localStorage.setItem('token', result.data.data.token)
-                  resolve(result)
-
-                //   if(result.data.data.role === 'HR'){
-                //     router.push('/hr-admin-dashboard')
-                //   } else if(result.data.data.role === 'vendor'){
-                //     router.push('/vendor-admin-dashboard')
-                //   }   
+                  resolve(result) 
                 })
                 .catch(error => {
                   reject(error.response)

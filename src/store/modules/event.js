@@ -20,8 +20,9 @@ export default {
   actions: {
     getAllEvent(context, payload) {
       let query = `/api/embreo/event?id=${payload.idUser}&search=${payload.search}&role=${payload.role}&filter=${payload.filter}&page=${payload.page}&limit=${payload.limit}`
-        axios.get('http://localhost:3000' + query)
+        axios.get(`${process.env.VUE_APP_SERVER_URL}` + query)
         .then(response => {
+          console.log('ini get all data ', response)
             context.commit('setEvents', response.data.data)
             context.commit('setPagination', response.data.pagination)
         })
@@ -30,7 +31,7 @@ export default {
         })
     },
     getAllVendor(context) {
-      axios.get('http://localhost:3000/api/embreo/user/vendor')
+      axios.get(`${process.env.VUE_APP_SERVER_URL}/api/embreo/user/vendor`)
       .then(response => {
         context.commit('setVendors', response.data.data)
       })
@@ -39,7 +40,7 @@ export default {
       })
     },
     createEvent(context, payload) {
-      axios.post('http://localhost:3000/api/embreo/event/create', payload)
+      axios.post(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/create`, payload)
       .then(response => {
         console.log(response);
       })
@@ -48,7 +49,7 @@ export default {
       })
     },
     updateEvent(context, payload) {
-      axios.put(`http://localhost:3000/api/embreo/event/update/${payload.id}`, payload)
+      axios.put(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/update/${payload.id}`, payload)
       .then(response => {
         console.log(response);
       })
@@ -57,7 +58,7 @@ export default {
       })
     },
     updateEventStatus(context, payload) {
-      axios.put(`http://localhost:3000/api/embreo/event/update_status/${payload.id}`, payload)
+      axios.put(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/update_status/${payload.id}`, payload)
       .then(response => {
         console.log(response);
       })
@@ -66,7 +67,7 @@ export default {
       })
     },
     deleteEvent(context, payload) {
-      axios.delete(`http://localhost:3000/api/embreo/event/delete/${payload.id}`)
+      axios.delete(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/delete/${payload.id}`)
       .then(response => {
         console.log(response);
       })
