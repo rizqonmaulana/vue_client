@@ -1,12 +1,17 @@
 <template>
     <div class="container-fluid">
+        <div class="d-flex flex-row-reverse">
+            <div>
+                <button class="btn btn-danger float-right" @click="logout()"><b-icon icon="box-arrow-left" scale="0.8" variant="white"></b-icon>  Logout</button>
+            </div>
+        </div>
         <div class="row mb-3">
             <div class="col">
-                 <h5 class="mb-5">
+                 <h3 class="mb-5">
                     {{ title }}
                     <br>
                     {{ user.institutionName }}
-                </h5>
+                </h3>
 
             </div>
         </div>
@@ -185,18 +190,12 @@
         dateThree: '',
         confirmedDateApprove: '',
         payloadGetEvent: {
-            idUser: 2,
+            idUser: 1,
             search: '',
-            role: 'vendor',
+            role: 'HR',
             filter: 'All',
             page: 1,
             limit: 50
-        },
-        user: {
-            id: 2,
-            name: 'vendor1',
-            role: 'vendor',
-            institutionName: 'Bee Group',
         },
         updateStatus : ''
       }
@@ -204,11 +203,12 @@
     computed: {
       ...mapGetters({
         eventItemsArr: 'getEvents',
-        vendorsArr: 'getVendors'
+        vendorsArr: 'getVendors',
+        user: 'getUser'
       }),
     },
     methods: {
-        ...mapActions(['getAllEvent', 'getAllVendor', 'createEvent', 'updateEvent', 'updateEventStatus', 'deleteEvent']),
+        ...mapActions(['getAllEvent', 'getAllVendor', 'createEvent', 'updateEvent', 'updateEventStatus', 'deleteEvent', 'logout']),
       setModalTitle(title) {
         this.modalTitle = title
       },
@@ -324,7 +324,6 @@
     },
    created() {
         this.getAllEvent(this.payloadGetEvent).then(res => {
-            console.log('get all event');
             console.log(res)
         })
         this.getAllVendor().then(res => {
