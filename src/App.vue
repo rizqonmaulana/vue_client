@@ -5,13 +5,17 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'App',
-  created() {
-    this.interceptorRequest()
-    this.interceptorResponse()
+  created() {},
+  computed: {
+    ...mapGetters({
+      isUserLoggedIn: 'getUser'
+    })
   },
+  updated() {},
+
   methods: {
     ...mapActions(['interceptorRequest', 'interceptorResponse'])
   }

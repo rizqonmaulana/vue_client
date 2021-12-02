@@ -4,11 +4,14 @@ import router from '../../router/index'
 export default {
     state: {
         user: {},
-        token: localStorage.getItem('token') || null,
+        token: localStorage.getItem('token') ,
     },
     mutations: {
         setUser(state, user) {
             state.user = user;
+        },
+        setToken(state, token) {
+            state.token = token
         },
         delUser(state) {
             state.user = {}

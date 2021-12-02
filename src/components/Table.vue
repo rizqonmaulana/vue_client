@@ -167,7 +167,9 @@
           ? createEventHandler()
           : modalTitle === 'Update event'
           ? updateEventHandler()
-          : updateEvenStatusHandler()
+          : modalTitle === 'View event' && event.status === 'Pending'
+          ? updateEvenStatusHandler()
+          : ''
       "
     >
       <div class="form-row">
@@ -404,7 +406,8 @@ export default {
       eventItemsArr: 'getEvents',
       vendorsArr: 'getVendors',
       user: 'getUser',
-      paginData: 'getPagination'
+      paginData: 'getPagination',
+      token: 'isLogin'
     })
   },
   methods: {
@@ -459,6 +462,7 @@ export default {
       }
 
       console.log('payload create', payload)
+      console.log('ini token ', this.token)
 
       this.createEvent(payload)
         .then((result) => {

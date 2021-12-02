@@ -40,7 +40,13 @@ export default {
       })
     },
     createEvent(context, payload) {
-      axios.post(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/create`, payload)
+      axios.post(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/create`, payload ,
+       {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        }
+      }
+      ,)
       .then(response => {
         console.log(response);
       })
@@ -49,7 +55,12 @@ export default {
       })
     },
     updateEvent(context, payload) {
-      axios.put(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/update/${payload.id}`, payload)
+      axios.put(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/update/${payload.id}`, payload,
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      }
+    })
       .then(response => {
         console.log(response);
       })
@@ -58,7 +69,11 @@ export default {
       })
     },
     updateEventStatus(context, payload) {
-      axios.put(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/update_status/${payload.id}`, payload)
+      axios.put(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/update_status/${payload.id}`, payload,{
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      }
+    })
       .then(response => {
         console.log(response);
       })
@@ -67,7 +82,11 @@ export default {
       })
     },
     deleteEvent(context, payload) {
-      axios.delete(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/delete/${payload.id}`)
+      axios.delete(`${process.env.VUE_APP_SERVER_URL}/api/embreo/event/delete/${payload.id}`,{
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      }
+    })
       .then(response => {
         console.log(response);
       })
